@@ -1,0 +1,8 @@
+{
+  "name": "META CONTENTS",
+  "description": "전문가의 노하우를 담은 전자책 마켓플레이스, META CONTENTS입니다. AI 기반 주제 추천과 프리미엄 디자인을 경험해보세요.",
+  "requestFramePermissions": [
+    "camera",
+    "microphone"
+  ]
+}
