@@ -4,15 +4,32 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>META CONTENTS - 전문가의 노하우 마켓</title>
+    <title>디하클 라운지 - 디지털 노마드 하이클래스</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Pretendard:wght@100;400;700;900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Pretendard:wght@400;600;700;900&display=swap" rel="stylesheet">
+    <script>
+      tailwind.config = {
+        theme: {
+          extend: {
+            colors: {
+              brand: {
+                primary: '#0082E6',
+                secondary: '#0066B8',
+                accent: '#E6F4FF',
+                dark: '#1A1D23',
+                gray: '#64748B'
+              }
+            }
+          }
+        }
+      }
+    </script>
     <style>
         body {
             font-family: 'Pretendard', sans-serif;
-            background-color: #fcfcfc;
+            background-color: #F8FAFC;
+            letter-spacing: -0.025em;
         }
-        /* Custom scrollbar for horizontal categories */
         .no-scrollbar::-webkit-scrollbar {
             display: none;
         }

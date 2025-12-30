@@ -1,6 +1,6 @@
 {
-  "name": "META CONTENTS",
-  "description": "전문가의 노하우를 담은 전자책 마켓플레이스, META CONTENTS입니다. AI 기반 주제 추천과 프리미엄 디자인을 경험해보세요.",
+  "name": "디하클 라운지",
+  "description": "디지털 노마드 하이클래스를 위한 프리미엄 지식 공유 플랫폼, 디하클 라운지입니다.",
   "requestFramePermissions": [
     "camera",
     "microphone"

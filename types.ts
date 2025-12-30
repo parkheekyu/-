@@ -13,11 +13,21 @@ export interface EbookItem {
   isNew?: boolean;
 }
 
+export interface KnowledgeAnalysis {
+  demandScore: number; // 0-100
+  estimatedPrice: string;
+  competitionLevel: '매우 높음' | '높음' | '보통' | '낮음';
+  nicheStrategy: string;
+  suggestedTitle: string;
+  potentialEarnings: string;
+}
+
+// Fix: Added RecommendedIdea interface to match the structure expected by AIRecommendation component
 export interface RecommendedIdea {
   title: string;
   description: string;
-  price: string;
   reason: string;
+  price: string;
 }
 
 export enum Category {

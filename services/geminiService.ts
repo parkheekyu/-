@@ -1,16 +1,56 @@
 
 import { GoogleGenAI, Type } from "@google/genai";
-import { RecommendedIdea } from "../types";
+import { KnowledgeAnalysis, RecommendedIdea } from "../types";
 
-const ai = new GoogleGenAI({ apiKey: process.env.API_KEY || '' });
-
-export const getAIRecommendations = async (userInput: string): Promise<RecommendedIdea[]> => {
+// Fix: Updated analyzeKnowledgeProfit to initialize GoogleGenAI per-call and use direct process.env.API_KEY as per guidelines
+export const analyzeKnowledgeProfit = async (skill: string): Promise<KnowledgeAnalysis | null> => {
+  const ai = new GoogleGenAI({ apiKey: process.env.API_KEY });
   try {
     const response = await ai.models.generateContent({
       model: "gemini-3-flash-preview",
-      contents: `사용자가 관심 있어하는 전자책 주제: "${userInput}". 
-      이 주제로 수익을 창출할 수 있는 3가지의 구체적인 전자책 제목과 내용을 제안해줘.
-      제안할 때 한국어로 응답해줘.`,
+      contents: `사용자의 기술/지식: "${skill}". 
+      이 지식을 전자책으로 만들었을 때의 시장 가치를 분석해줘.
+      다음 항목들을 포함해서 한국어 JSON으로 응답해줘:
+      1. demandScore (시장 수요 점수 0-100)
+      2. estimatedPrice (권장 판매가 예: 29,000원)
+      3. competitionLevel (경쟁 정도: 매우 높음, 높음, 보통, 낮음)
+      4. nicheStrategy (틈새 시장 공략 전략 1문장)
+      5. suggestedTitle (가장 매력적인 전자책 제목)
+      6. potentialEarnings (예상 월 수익 범위)`,
+      config: {
+        responseMimeType: "application/json",
+        responseSchema: {
+          type: Type.OBJECT,
+          properties: {
+            demandScore: { type: Type.NUMBER },
+            estimatedPrice: { type: Type.STRING },
+            competitionLevel: { type: Type.STRING },
+            nicheStrategy: { type: Type.STRING },
+            suggestedTitle: { type: Type.STRING },
+            potentialEarnings: { type: Type.STRING }
+          },
+          required: ["demandScore", "estimatedPrice", "competitionLevel", "nicheStrategy", "suggestedTitle", "potentialEarnings"]
+        }
+      }
+    });
+
+    const text = response.text;
+    return text ? JSON.parse(text) : null;
+  } catch (error) {
+    console.error("Knowledge Analysis failed:", error);
+    return null;
+  }
+};
+
+// Fix: Added getAIRecommendations export to fix the missing member error in AIRecommendation component
+export const getAIRecommendations = async (topic: string): Promise<RecommendedIdea[]> => {
+  const ai = new GoogleGenAI({ apiKey: process.env.API_KEY });
+  try {
+    const response = await ai.models.generateContent({
+      model: "gemini-3-flash-preview",
+      contents: `사용자의 관심 분야: "${topic}". 
+      이 분야에서 수익화가 가능한 전자책 아이디어 3가지를 제안해줘.
+      각 아이디어는 제목, 상세 설명, 선정 이유, 권장 판매가를 포함해야 해.`,
       config: {
         responseMimeType: "application/json",
         responseSchema: {
@@ -18,18 +58,19 @@ export const getAIRecommendations = async (userInput: string): Promise<Recommend
           items: {
             type: Type.OBJECT,
             properties: {
-              title: { type: Type.STRING, description: "전자책 제목" },
-              description: { type: Type.STRING, description: "주요 목차 및 내용 설명" },
-              price: { type: Type.STRING, description: "추천 판매 가격 (예: 15,000원)" },
-              reason: { type: Type.STRING, description: "이 주제가 잘 팔릴 이유" }
+              title: { type: Type.STRING },
+              description: { type: Type.STRING },
+              reason: { type: Type.STRING },
+              price: { type: Type.STRING }
             },
-            required: ["title", "description", "price", "reason"]
+            required: ["title", "description", "reason", "price"]
           }
         }
       }
     });
 
-    return JSON.parse(response.text || "[]");
+    const text = response.text;
+    return text ? JSON.parse(text) : [];
   } catch (error) {
     console.error("AI Recommendation failed:", error);
     return [];

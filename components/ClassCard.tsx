@@ -8,49 +8,54 @@ interface EbookCardProps {
 
 const EbookCard: React.FC<EbookCardProps> = ({ item }) => {
   return (
-    <div className="group cursor-pointer bg-white rounded-2xl overflow-hidden shadow-sm hover:shadow-xl transition-all duration-300 border border-gray-50">
-      <div className="relative aspect-[3/4] overflow-hidden bg-gray-200">
-        <img 
-          src={item.imageUrl} 
-          alt={item.title} 
-          className="object-cover w-full h-full group-hover:scale-105 transition duration-700"
-        />
-        <div className="absolute top-3 left-3 flex flex-col gap-2">
+    <div className="group cursor-pointer bg-transparent transition-all duration-300">
+      <div className="relative aspect-[3/4.2] mb-3 group-hover:-translate-y-1 transition-transform duration-300">
+        <div className="absolute inset-0 z-10 pointer-events-none rounded-r-lg shadow-[inset_12px_0_15px_-10px_rgba(0,0,0,0.5)] bg-gradient-to-r from-black/15 via-transparent to-transparent"></div>
+        
+        <div className="w-full h-full overflow-hidden rounded-r-lg rounded-l-sm bg-white shadow-sm group-hover:shadow-lg transition-shadow border-l border-black/5">
+          <img 
+            src={item.imageUrl} 
+            alt={item.title} 
+            className="object-cover w-full h-full grayscale-[20%] group-hover:grayscale-0 transition-all duration-500"
+          />
+        </div>
+
+        <div className="absolute top-2 left-2 z-20 flex flex-col gap-1">
           {item.isBestseller && (
-            <span className="bg-red-500 text-white text-xs font-black px-3 py-1 rounded-lg shadow-lg">
+            <span className="bg-brand-primary text-white text-[9px] font-bold px-1.5 py-0.5 rounded shadow-sm">
               BEST
             </span>
           )}
           {item.isNew && (
-            <span className="bg-blue-500 text-white text-xs font-black px-3 py-1 rounded-lg shadow-lg">
+            <span className="bg-gray-800 text-white text-[9px] font-bold px-1.5 py-0.5 rounded shadow-sm">
               NEW
             </span>
           )}
         </div>
-        <div className="absolute bottom-3 right-3 bg-black/60 backdrop-blur-md text-white text-[10px] font-bold px-2 py-1 rounded">
-          PDF {item.pageCount}p
+
+        <div className="absolute bottom-2 right-2 z-20 bg-black/40 backdrop-blur-sm text-white text-[8px] font-bold px-1.5 py-0.5 rounded">
+          {item.pageCount}P
         </div>
       </div>
-      <div className="p-5">
-        <div className="text-sm font-bold text-red-500 mb-2">{item.category}</div>
-        <h3 className="font-bold text-gray-900 text-lg mb-3 line-clamp-2 leading-snug min-h-[56px]">
+
+      <div className="px-0.5">
+        <div className="text-[10px] font-bold text-brand-primary mb-1 uppercase tracking-tight">{item.category}</div>
+        <h3 className="font-bold text-brand-dark text-[13px] md:text-sm mb-1.5 line-clamp-2 leading-tight h-8 md:h-9">
           {item.title}
         </h3>
-        <div className="text-sm text-gray-500 mb-3 flex items-center">
-          <span className="font-bold text-gray-700 mr-2">{item.authorName}</span>
-          <span className="w-1 h-1 bg-gray-300 rounded-full mx-1"></span>
-          <span className="text-yellow-500 font-bold ml-1">★ {item.rating}</span>
-          <span className="text-gray-400 ml-1">({item.reviewCount})</span>
-        </div>
-        <div className="flex items-center justify-between border-t border-gray-50 pt-4">
-          <div className="text-xl font-black text-gray-900">
+        
+        <div className="flex items-center justify-between mt-auto">
+          <div className="flex flex-col">
+            <span className="text-[10px] text-gray-500 font-medium">{item.authorName}</span>
+            <div className="flex items-center text-[10px] text-gray-400 mt-0.5">
+              <span className="text-yellow-400">★</span>
+              <span className="font-bold text-gray-700 ml-0.5">{item.rating}</span>
+              <span className="ml-1 opacity-60">({item.reviewCount})</span>
+            </div>
+          </div>
+          <div className="text-sm font-black text-brand-dark">
             {item.price.toLocaleString()}원
           </div>
-          <button className="text-gray-300 hover:text-red-500 transition-colors">
-            <svg className="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
-            </svg>
-          </button>
         </div>
       </div>
     </div>
